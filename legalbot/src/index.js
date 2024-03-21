@@ -1,17 +1,60 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import BotMessage from "./components/BotMessage";
+import UserMessage from "./components/UserMessage";
+import Messages from "./components/Messages";
+import Input from "./components/Input";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+import API from "./ChatbotAPI";
+
+import "./styles.css";
+
+function Chatbot() {
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    async function loadWelcomeMessage() {
+      const welcomeMessage = "How can I assist you?"
+      setMessages([<BotMessage key="0" fetchMessage={() => welcomeMessage} />]);
+    }
+    loadWelcomeMessage();
+  }, []);
+
+
+
+  const send = async text => {
+    const newMessages = messages.concat(
+      <UserMessage key={messages.length + 1} text={text} />,
+      <BotMessage
+        key={messages.length + 2}
+        fetchMessage={async () => await API.GetChatbotResponse(text)}
+      />
+    );
+    setMessages(newMessages);
+  };
+
+
+
+
+  return (
+    <div className="maindiv">
+      <Navbar />
+      <div className="chatsection">
+        <div className="chatbot">
+          <div className="header">&nbsp;Legalb0t: your Legal Assistant</div>
+          <Messages messages={messages} />
+          <Input onSend={send} />
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
+
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<Chatbot />, rootElement);
