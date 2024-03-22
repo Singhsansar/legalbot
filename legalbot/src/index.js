@@ -17,7 +17,7 @@ function Chatbot() {
 
   useEffect(() => {
     async function loadWelcomeMessage() {
-      const welcomeMessage = "How can I assist you?"
+      const welcomeMessage = "How can I assist you?";
       setMessages([<BotMessage key="0" fetchMessage={() => welcomeMessage} />]);
     }
     loadWelcomeMessage();
@@ -45,7 +45,9 @@ function Chatbot() {
       <div className="chatsection">
         <div className="chatbot">
           <div className="header">&nbsp;Legalb0t: your Legal Assistant</div>
-          <Messages messages={messages} />
+          <div className="bot-message" class>
+            <Messages messages={messages} />
+          </div>
           <Input onSend={send} />
         </div>
       </div>
