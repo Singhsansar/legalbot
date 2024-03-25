@@ -10,7 +10,8 @@
 
 # production
 /build
-
+.env
+/legalbot/node_modules
 # misc
 .DS_Store
 .env.local
